@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Spotify api/name_song_artist.csv" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Spotify api/title_and_artist.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/tool_download/id_track.csv" charset="UTF-8" />
+  </component>
+</project>
