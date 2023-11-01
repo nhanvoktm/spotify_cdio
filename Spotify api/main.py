@@ -16,8 +16,8 @@ def get_token():
         "Content-Type": "application/x-www-form-urlencoded"
     }
     data = {"grant_type":"client_credentials",
-            "client_id":"8e51166e34c84304a67e4b54ecf8c2e1",
-            "client_secret":"65c7cd7d0f9e4cd4b83e1b21beffcc50"}
+            "client_id":"e5e8d8ea0e034a78ac89a0707c6539e4",
+            "client_secret":"2a2c84dc3066487c939c822f62706e54"}
     result = post(url,headers=headers,data=data)
     json_result = json.loads(result.content)
     token = json_result["access_token"]
@@ -67,7 +67,7 @@ def get_tracks_analysis(token,track_id):
     return json_result
 
 def get_playlist(token,playlist_id):
-    url = f'https://api.spotify.com/v1/playlists/{playlist_id}?fields=tracks%28items.track.id%29'
+    url = f'https://api.spotify.com/v1/playlists/{playlist_id}?fields=tracks'
     headers = get_auth_header(token)
     try:
         result = get(url, headers=headers)
@@ -85,10 +85,39 @@ def get_tracks_audio_features(token,track_id):
     except:
         return None
     return json_result
+
+def get_artists_from_playlist(token,playlist_id):
+    url = f'https://api.spotify.com/v1/playlists/{playlist_id}?fields=tracks'
+    headers = get_auth_header(token)
+    try:
+        result = get(url, headers=headers)
+        json_result = json.loads(result.content)
+    except:
+        return None
+    return json_result
+
+def get_id_album_from_id_artist(token,artist_id):
+    url = f'https://api.spotify.com/v1/artists/{artist_id}/albums?limit=10'
+    headers = get_auth_header(token)
+    try:
+        result = get(url, headers=headers)
+        json_result = json.loads(result.content)
+    except:
+        return None
+    return json_result
+
+def get_album_tracks(token,album_id):
+    url = f'https://api.spotify.com/v1/albums/{album_id}/tracks?limit=20'
+    headers = get_auth_header(token)
+    try:
+        result = get(url, headers=headers)
+        json_result = json.loads(result.content)
+    except:
+        return None
+    return json_result
 token = get_token()
 
 csv_file_name = "data.csv"
-
 
 def to_csv(csv_file_name,data):
     # Mở tệp CSV trong chế độ ghi (append mode)
@@ -101,6 +130,21 @@ def to_csv(csv_file_name,data):
 def to_json(json_file_name,data):
     with open(json_file_name, "w",newline='') as json_file:
         json.dump(data, json_file)
+# get id_artist from id_playlist
+# data = get_artists_from_playlist(token,"37i9dQZF1DX4SBhb3fqCJd")["tracks"]["items"][0]["track"]["artists"]
+# for row in data:
+#     print(row["id"])
+# df = pd.read_csv("playlist_ids_to_artists.csv").values[15:]
+# for j in df:
+#     id_art = get_artists_from_playlist(token,j[0])["tracks"]["total"]
+#     for i in range(0,int(id_art)):
+#         try:
+#             data = get_artists_from_playlist(token,j[0])["tracks"]["items"][i]["track"]["artists"]
+#             for row in data:
+#                 tt = {"id":row["id"]}
+#                 to_csv("id_artist_to_track.csv",tt)
+#         except:
+#             None
 # #get tracks_id from playlist_id
 # csv_file_playlist_id = "id_playlist.csv"
 # playlist_id = (get_playlist(token,"37i9dQZF1DXbLMw3ry7d7k")["tracks"])["items"]
@@ -138,6 +182,26 @@ def to_json(json_file_name,data):
 #     genre = {"id":(get_artists(token,i[0]))["genres"]}
 #     to_csv(genre_file,genre)
 
+#get id_album from id_artist
+# df = pd.read_csv("id_artist_to_track.csv").values[1000:]
+# for j in df:
+#     for i in range(10):
+#         try:
+#             song = {"id":get_id_album_from_id_artist(token, j[0])["items"][i]["id"]}
+#             to_csv("id_album.csv",song)
+#         except:
+#             None
+
+#get id_track from id_album
+df = pd.read_csv("id_album.csv").values[2300:2500]
+for j in df:
+    for i in range(20):
+        try:
+            song = {"id":get_album_tracks(token,j[0])["items"][i]["id"]}
+            to_csv("id_tracks_new.csv",song)
+        except:
+            None
+# print(get_album_tracks(token,"6YA4khiUxTlEpPRIuf4KgA")["items"][0]["id"])
 # properties = {}
 # for i in value_track_id:
 #     try:
@@ -168,3 +232,5 @@ def to_json(json_file_name,data):
 #     }
 #     properties_track.append(properties)
 #     print("done")
+
+#get track_id from artist_id
