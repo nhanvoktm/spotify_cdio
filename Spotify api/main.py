@@ -1,14 +1,7 @@
-from dotenv import load_dotenv
-import os
 from requests import post,get
 import json
 import csv
 import pandas as pd
-
-load_dotenv()
-
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
 
 def get_token():
     url ='https://accounts.spotify.com/api/token'
@@ -16,8 +9,8 @@ def get_token():
         "Content-Type": "application/x-www-form-urlencoded"
     }
     data = {"grant_type":"client_credentials",
-            "client_id":"78af93ddd4594bb9b673e310b69aef0c",
-            "client_secret":"74ab243b930d45da9e85fdc661a432ab"}
+            "client_id":"046652aca1794c8785fe57d9fc3c4490",
+            "client_secret":"9f0bbb0c97a448e9b31d9531041068b4"}
     result = post(url,headers=headers,data=data)
     json_result = json.loads(result.content)
     token = json_result["access_token"]
@@ -203,12 +196,14 @@ def to_json(json_file_name,data):
 #             None
 
 #get album_name,artist_name,popularity
-df = pd.read_csv('id_tracks_new.csv').values[4000:5000]
+df = pd.read_csv('./Spotify api/id_tracks_new.csv').values[1000:1500]
+
 for id in df:
-    popp = {'album':get_track(token,id[0])['album']['name'],
-    "artist":get_track(token,id[0])['artists'][0]['name'],
-    'popularity':get_track(token,id[0])['popularity']}
-    to_csv("album,artist,popu.csv",popp)
+    popp = {'song':get_track(token,id[0])['name'],
+        'album':get_track(token,id[0])['album']['name'],
+        "artist":get_track(token,id[0])['artists'][0]['name'],
+        'popularity':get_track(token,id[0])['popularity']}
+#     to_csv("album,artist,popu.csv",popp)
 # print(get_album_tracks(token,"6YA4khiUxTlEpPRIuf4KgA")["items"][0]["id"])
 # properties = {}
 # for i in value_track_id:
