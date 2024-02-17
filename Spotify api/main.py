@@ -9,8 +9,8 @@ def get_token():
         "Content-Type": "application/x-www-form-urlencoded"
     }
     data = {"grant_type":"client_credentials",
-            "client_id":"046652aca1794c8785fe57d9fc3c4490",
-            "client_secret":"9f0bbb0c97a448e9b31d9531041068b4"}
+            "client_id":"1dca3768199445f5ab7e9a0393837968",
+            "client_secret":"eecf670be8d44f4ca5d0a5c9178d64e7"}
     result = post(url,headers=headers,data=data)
     json_result = json.loads(result.content)
     token = json_result["access_token"]
@@ -48,7 +48,7 @@ def get_song_by_artist(token,artist_id):
     except:
         return None
     return json_result
-
+    4
 def get_tracks_analysis(token,track_id):
     url = f'https://api.spotify.com/v1/audio-analysis/{track_id}'
     headers = get_auth_header(token)
@@ -160,17 +160,15 @@ def to_json(json_file_name,data):
 
 
 # get artist_id from track_id
-# df = pd.read_csv('id_playlist.csv')
-# value_track_id = df.values[4000:]
-# artist_id_file = "artists_id.csv"
-# for i in value_track_id:
-#     artists_id = {"id":(get_track(token,str(i[0]))['album']['artists'])[0]['id']}
-#     to_csv(artist_id_file,artists_id)
+# df = pd.read_csv('id_tracks_new.csv').values[44000:]
+# for i in df:
+#     artists_id = {"id":(get_track(token,i[0]))['artists'][0]['id']}
+#     to_csv("id_artist_new.csv",artists_id)
 
 # get genre from artist_id
-# genre_file = "genre.csv"
-# df = pd.read_csv("artists_id.csv")
-# value_artists_id = df.values[5000:]
+# genre_file = "genre_new.csv"
+# df = pd.read_csv("id_artist_new.csv")
+# value_artists_id = df.values[44000:]
 # for i in value_artists_id:
 #     genre = {"id":(get_artists(token,i[0]))["genres"]}
 #     to_csv(genre_file,genre)
@@ -195,15 +193,17 @@ def to_json(json_file_name,data):
 #         except:
 #             None
 
-#get album_name,artist_name,popularity
-df = pd.read_csv('./Spotify api/id_tracks_new.csv').values[1000:1500]
+#get song_name,album_name,artist_name,popularity
+df = pd.read_csv('../tool_download/id_tracks_new.csv').values[44500:]
 
 for id in df:
     popp = {'song':get_track(token,id[0])['name'],
         'album':get_track(token,id[0])['album']['name'],
         "artist":get_track(token,id[0])['artists'][0]['name'],
         'popularity':get_track(token,id[0])['popularity']}
-#     to_csv("album,artist,popu.csv",popp)
+    to_csv("album,artist,popu.csv",popp)
+
+
 # print(get_album_tracks(token,"6YA4khiUxTlEpPRIuf4KgA")["items"][0]["id"])
 # properties = {}
 # for i in value_track_id:

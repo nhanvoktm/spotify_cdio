@@ -18,7 +18,7 @@ source = r"C:\Users\ACER\Downloads"
 #destination : Thư mục mình cần lưu
 destination = "D:\music_data_all\audio"
 
-data = list(pd.read_csv("id_track.csv").values)
+data = list(pd.read_csv("download_audio.csv").values)
 
 logging.basicConfig(filename="process.log",
                     format='%(asctime)s %(message)s',
