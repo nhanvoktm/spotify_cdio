@@ -5,7 +5,7 @@ from datetime import date
 import csv
 import shutil
 import hashlib
-
+import uuid
 
 
 
@@ -37,7 +37,7 @@ def extract_mp3_properties(mp3_file):
             "genre": [] or [],
             "duration": audio_file.info.time_secs,
             "year": audio_file.tag.recording_date.year or "",
-            "coverArt":f"{cover_art}.jpg",
+            "coverArt":f"{str(uuid.uuid4())}.jpg",
         }
     except:
         print('failed to extract : ',os.path.basename(mp3_file))
@@ -50,7 +50,7 @@ def extract_mp3_properties(mp3_file):
 
 
 
-folder_path = "D:/music_data_all/audio"
+folder_path = "D:/music_data_all/Newfolder"
 
 
 mp3_properties_list = []
@@ -64,9 +64,9 @@ for filename in os.listdir(folder_path):
         mp3_properties_list.append(mp3_properties)
 
 
-output_file = f"D:/Python/music_data({date.today()}).json"
+output_file = f"D:/music_data_all/({date.today()})11.json"
 
-with open(output_file, "w", encoding='utf8') as json_file:
+with open(output_file, "w", encoding='utf-8') as json_file:
     json.dump(mp3_properties_list, json_file, indent=4,ensure_ascii=False)
 
 print(f"MP3 properties saved to {output_file}")
@@ -76,7 +76,7 @@ print(f"MP3 properties saved to {output_file}")
 
 
 
-for file_name in error_files:
-    print(file_name)
-    shutil.move(f'D:/music_data_all/audio/{file_name[0]}',f'D:/music_data_all/fail_audio/')
+# for file_name in error_files:
+#     print(file_name)
+#     shutil.move(f'D:/music_data_all/{file_name[0]}',f'D:/music_data_all/fail_audio/')
 

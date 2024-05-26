@@ -1,3 +1,4 @@
+import csv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -13,10 +14,10 @@ import glob
 import shutil
 import pandas as pd
 #source : Thư mục download mặc định
-source = r"C:\Users\ACER\Downloads"
+# source = r"C:\Users\ACER\Downloads"
 
 #destination : Thư mục mình cần lưu
-destination = "D:\music_data_all\audio"
+# destination = "D:\music_data_all\audio"
 
 data = list(pd.read_csv("download_audio.csv").values)
 
@@ -53,7 +54,7 @@ for url in data:
 
         driver.find_element(By.XPATH, '//button[text()="Download"]').click()
 
-        WebDriverWait(driver, 50).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[download]')))
+        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[download]')))
         time.sleep(data_sync_duration)
         driver.find_element(By.CSS_SELECTOR, 'a[download]').click()
 
@@ -70,8 +71,9 @@ for url in data:
         logger.info(f"success fully download : {url}")
 
     except:
-
-        logger.error(f"failed at : {url}")
-
+        fail_song = {"id":url}
+        with open("fail_song.csv", 'a', newline='', encoding="utf-8") as csv_file:
+            csv_write = csv.writer(csv_file)
+            csv_write.writerow(fail_song.values())
     finally:
         driver.refresh()
