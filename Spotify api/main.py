@@ -9,8 +9,8 @@ def get_token():
         "Content-Type": "application/x-www-form-urlencoded"
     }
     data = {"grant_type":"client_credentials",
-            "client_id":"1dca3768199445f5ab7e9a0393837968",
-            "client_secret":"eecf670be8d44f4ca5d0a5c9178d64e7"}
+            "client_id":"8e51166e34c84304a67e4b54ecf8c2e1",
+            "client_secret":"65c7cd7d0f9e4cd4b83e1b21beffcc50"}
     result = post(url,headers=headers,data=data)
     json_result = json.loads(result.content)
     token = json_result["access_token"]
@@ -139,36 +139,37 @@ def to_json(json_file_name,data):
 #         except:
 #             None
 # #get tracks_id from playlist_id
-# csv_file_playlist_id = "id_playlist.csv"
-# playlist_id = (get_playlist(token,"37i9dQZF1DXbLMw3ry7d7k")["tracks"])["items"]
-#
+# csv_file_playlist_id = "id_track_new_1.csv"
+# playlist_id = (get_playlist(token,"0ImbTL9gm01nStEsaCmj16")["tracks"])["items"]
+
 # for i in range(len(playlist_id)):
 #     arr_id = (playlist_id[i]['track'])
 #     to_csv(csv_file_playlist_id,arr_id)
 
 ## get tracks_audio_features from tracks_id to csv
 
-# df = pd.read_csv('id_tracks_new.csv')
-# value_track_id = df.values[44000:45000]
-# for i in value_track_id:
+
+# df = pd.read_csv('./Book1.csv').values
+
+# for i in df:
 #         try:
 #             songs = get_tracks_audio_features(token, str(i[0])) or ""
 #         except:
 #             songs = {'data':"loi"}
-#
-#         to_csv('data_new.csv',songs)
+
+#         to_csv('data_3.csv',songs)
 
 
 # get artist_id from track_id
-# df = pd.read_csv('id_tracks_new.csv').values[44000:]
+# df = pd.read_csv('./Book1.csv').values
 # for i in df:
 #     artists_id = {"id":(get_track(token,i[0]))['artists'][0]['id']}
-#     to_csv("id_artist_new.csv",artists_id)
+#     to_csv("id_artist_3.csv",artists_id)
 
 # get genre from artist_id
-# genre_file = "genre_new.csv"
-# df = pd.read_csv("id_artist_new.csv")
-# value_artists_id = df.values[44000:]
+# genre_file = "genre_new_3.csv"
+# df = pd.read_csv("id_artist_3.csv")
+# value_artists_id = df.values
 # for i in value_artists_id:
 #     genre = {"id":(get_artists(token,i[0]))["genres"]}
 #     to_csv(genre_file,genre)
@@ -194,15 +195,16 @@ def to_json(json_file_name,data):
 #             None
 
 #get song_name,album_name,artist_name,popularity
-df = pd.read_csv('../tool_download/id_tracks_new.csv').values[44500:]
+# df = pd.read_csv('Book1.csv').values
 
-for id in df:
-    popp = {'song':get_track(token,id[0])['name'],
-        'album':get_track(token,id[0])['album']['name'],
-        "artist":get_track(token,id[0])['artists'][0]['name'],
-        'popularity':get_track(token,id[0])['popularity']}
-    to_csv("album,artist,popu.csv",popp)
-
+# for id in df:
+#     popp = {
+#         'song':get_track(token,id[0])['name'],
+#         # 'album':get_track(token,id[0])['album']['name'],
+#         "artist":get_track(token,id[0])['artists'][0]['name'],
+#         # 'popularity':get_track(token,id[0])['popularity']
+#         }
+#     to_csv("artist_name_3.csv",popp)
 
 # print(get_album_tracks(token,"6YA4khiUxTlEpPRIuf4KgA")["items"][0]["id"])
 # properties = {}
